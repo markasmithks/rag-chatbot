@@ -29,3 +29,12 @@ Initial focus is on document ingestion and retrieval before UI and deployment.
 ```bash
 conda env create -f environment.yml
 conda activate rag-chatbot
+
+
+## Corpus
+
+This demo uses a curated subset of LangChain documentation, starting with:
+
+- **LangGraph Overview** (`overview.md`)
+
+Documents are ingested as Markdown and vectorized for retrieval.
