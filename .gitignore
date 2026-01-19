@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+
+# Conda
+.conda/
+env/
+.env/
+.venv/
+conda-env/
+
+# Environment variables
+.env
+
+# Vector stores / artifacts
+vectorstore/
+*.faiss
+*.pkl
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
