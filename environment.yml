@@ -7,6 +7,7 @@ dependencies:
   - pip:
       - langchain
       - langchain-openai
+      - langchain-community
       - streamlit
       - python-dotenv
       - pypdf
