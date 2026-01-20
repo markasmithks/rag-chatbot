@@ -25,4 +25,4 @@ vectorstore/
 .vscode/
 
 # Jupyter
-.ipynb_checkpoints/
+.ipynb_checkpoints/test_retrieval.py
