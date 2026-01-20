@@ -26,3 +26,4 @@ vectorstore/
 
 # Jupyter
 .ipynb_checkpoints/test_retrieval.py
+test_retrieval.py
