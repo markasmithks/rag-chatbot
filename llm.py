@@ -26,7 +26,10 @@ def generate_answer(question: str, context: str, llm) -> str:
     """
     prompt = f"""
 You are a helpful assistant answering questions using the provided context.
-Use only the information in the context.
+
+Answer the question directly.
+Use the context only to support your answer.
+Ignore information that is not relevant to the question.
 If the answer is not contained in the context, say "I don't know."
 
 Context:

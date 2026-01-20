@@ -1,6 +1,8 @@
 import streamlit as st
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
+from llm import load_llm, generate_answer
+
 
 # --- Configuration ---
 VECTORSTORE_PATH = "vectorstore"
@@ -28,6 +30,11 @@ def load_vectorstore():
     )
     return db
 
+def load_model():
+    return load_llm()
+
+llm = load_model()
+
 db = load_vectorstore()
 
 # --- User input ---
@@ -38,8 +45,21 @@ if query:
     with st.spinner("Searching documents..."):
         results = db.similarity_search(query, k=3)
 
-    st.subheader("Retrieved Context")
+    #context = "\n\n".join(doc.page_content for doc in results)
+    #change context to improve performance keeping answer context more precise
+    context = "\n\n".join(
+        f"Source {i}:\n{doc.page_content}"
+        for i, doc in enumerate(results, 1)
+    )
+    
+    with st.spinner("Generating answer..."):
+        answer = generate_answer(query, context, llm)
+
+    st.subheader("Answer")
+    st.write(answer)
+
+    st.subheader("Sources")
     for i, doc in enumerate(results, 1):
         st.markdown(f"**Source {i}: {doc.metadata.get('source')}**")
-        st.write(doc.page_content[:500])
+        st.write(doc.page_content[:300])
         st.markdown("---")
