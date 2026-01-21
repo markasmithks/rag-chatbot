@@ -81,7 +81,21 @@ When a user submits a query, the application performs a similarity search agains
 FAISS index to retrieve the most relevant document chunks. These chunks form the
 retrieval context for answer generation.
 
-### 4. Answer Generation
+### 4. Agentic Routing (Retrieval Decision)
+Before performing retrieval, the system evaluates whether a user query
+requires consulting external documentation.
+
+This decision is made using a lightweight LLM-based classifier that
+assesses whether the question depends on project-specific technical
+details (e.g., implementation or configuration behavior).
+
+To reduce the risk of under-retrieval, routing follows a conservative
+policy that biases toward retrieval for domain-specific technical
+queries. This ensures that documentation-backed answers are preferred
+whenever relevant, while still allowing direct responses for general
+or non-corpus questions.
+
+### 5. Answer Generation
 The retrieved context is passed to a local instruction-tuned language model
 (`google/flan-t5-base`) along with the user’s question. The model is explicitly instructed
 to answer the question using only the provided context and to avoid unrelated information.
@@ -89,7 +103,7 @@ to answer the question using only the provided context and to avoid unrelated in
 Prompt structure and context formatting were refined to improve grounding and reduce
 off-topic responses when multiple concepts appear in the retrieved documents.
 
-### 5. User Interface
+### 6. User Interface
 A Streamlit application (`app.py`) serves as the user interface. It displays the generated
 answer along with the underlying source excerpts, providing transparency into how each
 response was produced.
@@ -138,3 +152,4 @@ throughout development.
 Generated artifacts such as embeddings, FAISS indexes, and local secrets are intentionally
 excluded from version control. All source code and configuration required to reproduce the
 system is tracked in the repository.
+
