@@ -59,6 +59,42 @@ rag-chatbot/
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
+## How It Works
+
+This project implements a standard Retrieval-Augmented Generation (RAG) pipeline with
+explicit separation between ingestion, retrieval, and answer generation.
+
+### 1. Document Ingestion
+Source documents (Markdown files) are loaded and split into semantically coherent chunks
+using a recursive text splitter. Each chunk retains metadata indicating its source file.
+
+### 2. Embedding and Indexing
+All document chunks are embedded using a local Hugging Face sentence-transformer
+(`all-MiniLM-L6-v2`). The resulting vectors are stored in a FAISS index to enable fast
+semantic similarity search.
+
+### 3. Retrieval
+When a user submits a query, the application performs a similarity search against the
+FAISS index to retrieve the most relevant document chunks. These chunks form the
+retrieval context for answer generation.
+
+### 4. Answer Generation
+The retrieved context is passed to a local instruction-tuned language model
+(`google/flan-t5-base`) along with the user’s question. The model is explicitly instructed
+to answer the question using only the provided context and to avoid unrelated information.
+
+Prompt structure and context formatting were refined to improve grounding and reduce
+off-topic responses when multiple concepts appear in the retrieved documents.
+
+### 5. User Interface
+A Streamlit application (`app.py`) serves as the user interface. It displays the generated
+answer along with the underlying source excerpts, providing transparency into how each
+response was produced.
+
+
 ---
 
 ## Corpus
