@@ -153,3 +153,21 @@ Generated artifacts such as embeddings, FAISS indexes, and local secrets are int
 excluded from version control. All source code and configuration required to reproduce the
 system is tracked in the repository.
 
+---
+## Optional OpenAI Configuration
+
+By default, the application runs fully locally using Hugging Face models.
+A lightweight local model is always used for agentic routing decisions,
+and local generation (`google/flan-t5-base`) is used for answering questions
+unless explicitly configured otherwise.
+
+OpenAI-based answer generation is supported as an **optional backend** and
+must be explicitly enabled by the user.
+
+### Enabling OpenAI (Optional)
+
+To enable OpenAI for answer generation, create a local `.env` file with:
+
+```env
+OPENAI_API_KEY=your_api_key_here
+LLM_BACKEND=openai
