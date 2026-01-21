@@ -42,3 +42,28 @@ Answer:
 """
     response = llm(prompt)
     return response[0]["generated_text"].strip()
+
+
+def needs_retrieval(question: str, llm) -> bool:
+    """
+    Decide whether the question requires document retrieval.
+
+    Returns True if external context is needed, False otherwise.
+    """
+    prompt = f"""
+You are deciding whether a question requires looking up information
+from external documents.
+
+If the question asks how a specific library, framework, or system
+implements, configures, or behaves internally, answer YES.
+
+If the question is general knowledge, conceptual, or conversational
+and does not depend on project-specific documentation, answer NO.
+
+Question:
+{question}
+
+Answer with only YES or NO.
+"""
+    response = llm(prompt)[0]["generated_text"].strip().upper()
+    return response.startswith("Y")
