@@ -43,7 +43,7 @@ query = st.text_input("Enter your question:")
 # --- Retrieval ---
 if query:
     with st.spinner("Deciding how to answer..."):
-        retrieve = needs_retrieval(query, llm)
+        retrieve = needs_retrieval(query)
     # Conservative routing policy: always retrieve for domain-specific queries
     technical_keywords = ["langchain", "langgraph", "memory", "agent", "persistence", "implement"]
     if any(k in query.lower() for k in technical_keywords):
