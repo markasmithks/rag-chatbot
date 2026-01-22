@@ -26,7 +26,7 @@ embedding, retrieval, generation, and user interface layers.
 - Hugging Face MiniLM embeddings (`all-MiniLM-L6-v2`)
 - FAISS-based vector similarity search
 - Verified semantic retrieval over a curated document corpus
-- LLM-based answer generation using a local Hugging Face model (`flan-t5-base`)
+- LLM-based answer generation using a local instruction-tuned model (flan-t5-base), with optional hosted backends
 - Prompt and context refinement to improve grounding and relevance
 - Streamlit UI for interactive querying with transparent source attribution
 
@@ -75,6 +75,18 @@ using a recursive text splitter. Each chunk retains metadata indicating its sour
 All document chunks are embedded using a local Hugging Face sentence-transformer
 (`all-MiniLM-L6-v2`). The resulting vectors are stored in a FAISS index to enable fast
 semantic similarity search.
+
+### 2a. Vector Store Choice
+
+This project uses a local FAISS index for vector similarity search to
+prioritize reproducibility, offline development, and ease of evaluation.
+
+The retrieval layer is intentionally abstracted so that the FAISS-backed
+store could be replaced by a managed vector database (e.g., Pinecone)
+without changes to chunking, embedding, routing, or generation logic.
+
+This reflects the same architectural pattern used in cloud-deployed RAG
+systems, while keeping the demo self-contained and cost-free.
 
 ### 3. Retrieval
 When a user submits a query, the application performs a similarity search against the
@@ -154,6 +166,29 @@ excluded from version control. All source code and configuration required to rep
 system is tracked in the repository.
 
 ---
+
+## LLM-Agnostic Design Philosophy
+
+This project is intentionally designed to be LLM-agnostic.
+
+All language model usage is isolated behind a small abstraction layer,
+allowing generation backends to be swapped without changing retrieval,
+routing, or grounding logic.
+
+The system currently supports:
+- Local Hugging Face models for routing and generation
+- Optional OpenAI-based generation via environment configuration
+
+The same interface could be extended to support other local or hosted
+LLM runtimes (e.g., Ollama-hosted models or Grok-style APIs), enabling
+deployment in regions where OpenAI access is limited or unavailable.
+
+This design reflects a deliberate focus on portability, reproducibility,
+and long-term flexibility rather than reliance on a single provider.
+
+
+---
+
 ## Optional OpenAI Configuration
 
 By default, the application runs fully locally using Hugging Face models.
